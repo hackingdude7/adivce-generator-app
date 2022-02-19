@@ -1,12 +1,30 @@
 const button=document.querySelector(".dice")
-const id=document.querySelector(".id")
+const advice_id=document.querySelector(".id")
 const text=document.querySelector(".text")
-button.addEventListener("click",()=>{
-fetch("https://api.adviceslip.com/advice",{method: 'GET'})
-        .then(response=>response.json())
-        .then(json=>{
-                id.innerHTML=json.slip.id
-                text.innerHTML="\""+json.slip.advice+"\""
-            })
-        })
 
+const getrandom=()=>{
+    return new Promise((resolve)=>{
+        fetch("https://api.adviceslip.com/advice",{method: 'GET'})
+        .then(response=>response.json())
+        .then(json=>resolve(json))
+        .catch(() => {
+            resolve({
+              slip: {
+                id: -1,
+                advice: 'failed to fetch advice'
+              }
+            })
+        });
+    });
+}
+const updateadvice= async()=>{
+    const newadvice=await getrandom();
+    const {id,advice}=newadvice.slip;
+    advice_id.innerHTML=id;
+    text.innerHTML=advice
+}
+
+button.addEventListener("click",async ()=>{
+await updateadvice()
+// console.log("Hello")
+})

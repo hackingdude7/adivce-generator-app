@@ -2,6 +2,14 @@ const button=document.querySelector(".dice")
 const advice_id=document.querySelector(".id")
 const text=document.querySelector(".text")
 
+const delay = (ms) => {
+    return new Promise((resolve) => {
+      setTimeout(() => {
+        resolve()
+      }, ms)
+    })
+  }
+
 const getrandom=()=>{
     return new Promise((resolve)=>{
         fetch("https://api.adviceslip.com/advice",{method: 'GET'})
@@ -25,6 +33,6 @@ const updateadvice= async()=>{
 }
 
 button.addEventListener("click",async ()=>{
+await delay()
 await updateadvice()
-// console.log("Hello")
 })
